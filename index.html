@@ -740,3 +740,31 @@ new Chart(document.getElementById('c5_trust'), {
     scales:{x:{beginAtZero:true,max:100},y:{ticks:{font:{size:11}}}},
     plugins:{legend:{display:false}}
   }
+new Chart(document.getElementById('c5_needs'), {
+  type: 'scatter',
+  data: {
+    datasets: [
+      {label:'Real-time spend visibility', data:[{x:91,y:31}], backgroundColor:COLORS.red, pointRadius:14},
+      {label:'Automated approval workflows', data:[{x:88,y:38}], backgroundColor:COLORS.gold, pointRadius:13},
+      {label:'ERP/accounting integration', data:[{x:83,y:44}], backgroundColor:COLORS.teal, pointRadius:12},
+      {label:'Budget vs. actual reporting', data:[{x:79,y:29}], backgroundColor:COLORS.violet, pointRadius:12},
+      {label:'Vendor management & contracts', data:[{x:72,y:41}], backgroundColor:COLORS.blue, pointRadius:11},
+      {label:'Mobile approvals', data:[{x:68,y:52}], backgroundColor:COLORS.coral, pointRadius:10},
+      {label:'AI-powered anomaly detection', data:[{x:61,y:22}], backgroundColor:'#8B9DAF', pointRadius:9},
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales:{
+      x:{title:{display:true,text:'Importance to Finance Leaders →',font:{weight:'600'}},min:50,max:100},
+      y:{title:{display:true,text:'Current Satisfaction →',font:{weight:'600'}},min:10,max:65}
+    },
+    plugins:{
+      legend:{position:'bottom',labels:{font:{size:10},padding:10}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: Importance ${ctx.parsed.x}, Satisfaction ${ctx.parsed.y}`}}
+    }
+  }
+});
+</script>
+</body>
+</html>
