@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gather × Procurify | AI Research Results Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --mars-blue: #003DA5;
+  --mars-red: #C8102E;
+  --teal: #0ABAB5;
+  --deep: #0A1E33;
+  --gold: #F5A623;
+  --coral: #FF6B6B;
+  --violet: #7C5CFC;
+  --surface: #F4F5F7;
+  --card: #FFFFFF;
+  --text: #0F1A2A;
+  --text2: #556377;
+  --border: rgba(15,26,42,0.07);
+  --sh: 0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(0,0,0,0.06);
+  --sh-hover: 0 4px 32px rgba(0,0,0,0.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--card);-webkit-font-smoothing:antialiased;}
+
+/* ═══ HERO ═══ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:var(--deep);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 55% at 75% 25%, rgba(200,16,46,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 50% at 25% 75%, rgba(10,186,181,0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 30% 30% at 50% 50%, rgba(124,92,252,0.06) 0%, transparent 50%);
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 60% 60% at 50% 50%, black 10%, transparent 80%);
+}
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:140px 48px 100px;width:100%;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.1);border-radius:100px;
+  padding:7px 18px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:28px;
+  animation:fadeUp .7s ease both;
+}
+.hero-badge .dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+.hero h1{
+  font-family:'Fraunces',serif;font-size:clamp(38px,5.2vw,68px);font-weight:700;
+  line-height:1.08;color:#fff;max-width:800px;margin-bottom:20px;
+  animation:fadeUp .7s ease .1s both;
+}
+.hero h1 em{font-style:italic;color:var(--teal);}
+.hero-sub{font-size:18px;line-height:1.65;color:rgba(255,255,255,0.6);max-width:540px;margin-bottom:44px;animation:fadeUp .7s ease .2s both;}
+.hero-stats{display:flex;gap:44px;animation:fadeUp .7s ease .3s both;}
+.hero-stat .num{font-family:'Fraunces',serif;font-size:34px;font-weight:700;color:#fff;}
+.hero-stat .lbl{font-size:12px;color:rgba(255,255,255,0.45);margin-top:3px;letter-spacing:.3px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══ SECTIONS ═══ */
+section{padding:88px 48px;}
+.container{max-width:1200px;margin:0 auto;}
+.s-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+.s-title{font-family:'Fraunces',serif;font-size:clamp(26px,3.2vw,40px);font-weight:700;line-height:1.15;margin-bottom:12px;}
+.s-desc{font-size:16px;line-height:1.65;color:var(--text2);max-width:600px;margin-bottom:48px;}
+
+/* ═══ STUDY SECTIONS ═══ */
+.study-section{border-bottom:1px solid var(--border);}
+.study-section:nth-child(odd){background:var(--surface);}
+.study-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:36px;}
+.study-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.study-header h2{font-family:'Fraunces',serif;font-size:28px;font-weight:700;line-height:1.2;}
+.study-header .study-tag{font-size:12px;font-weight:600;color:var(--teal);letter-spacing:.5px;margin-top:4px;}
+.study-intro{font-size:15px;line-height:1.7;color:var(--text2);max-width:700px;margin-bottom:40px;}
+
+/* ═══ DATA CARDS & GRIDS ═══ */
+.data-grid{display:grid;gap:24px;}
+.data-grid.g2{grid-template-columns:1fr 1fr;}
+.data-grid.g3{grid-template-columns:1fr 1fr 1fr;}
+.data-grid.g4{grid-template-columns:1fr 1fr 1fr 1fr;}
+
+.card{
+  background:var(--card);border-radius:16px;padding:28px 24px;
+  border:1px solid var(--border);transition:transform .3s, box-shadow .3s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:var(--sh-hover);}
+.card-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);opacity:.6;margin-bottom:12px;}
+.card h4{font-size:15px;font-weight:600;margin-bottom:4px;}
+
+/* chart containers */
+.chart-wrap{position:relative;width:100%;aspect-ratio:16/10;}
+.chart-wrap canvas{width:100%!important;height:100%!important;}
+.chart-wrap-sq{position:relative;width:100%;aspect-ratio:1/1;}
+.chart-wrap-sq canvas{width:100%!important;height:100%!important;}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.kpi{background:var(--card);border-radius:12px;padding:20px;border:1px solid var(--border);text-align:center;}
+.kpi .val{font-family:'Fraunces',serif;font-size:28px;font-weight:700;}
+.kpi .lbl{font-size:11px;color:var(--text2);margin-top:2px;letter-spacing:.3px;}
+
+/* Verbatim quotes */
+.verbatim-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+.verbatim{
+  background:var(--card);border-radius:12px;padding:20px 22px;
+  border-left:3px solid var(--teal);border-top:1px solid var(--border);
+  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  font-size:14px;line-height:1.6;color:var(--text);font-style:italic;
+}
+.verbatim .v-meta{font-style:normal;font-size:11px;color:var(--text2);margin-top:8px;font-weight:600;}
+
+/* Perceptual map */
+.perceptual-map{
+  position:relative;width:100%;aspect-ratio:1.4/1;
+  background:var(--card);border-radius:16px;border:1px solid var(--border);
+  overflow:hidden;
+}
+.pm-axis-x,.pm-axis-y{position:absolute;background:var(--border);}
+.pm-axis-x{width:80%;height:1px;top:50%;left:10%;}
+.pm-axis-y{width:1px;height:80%;top:10%;left:50%;}
+.pm-label{position:absolute;font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1px;text-transform:uppercase;}
+.pm-label.top{top:6%;left:50%;transform:translateX(-50%);}
+.pm-label.bottom{bottom:6%;left:50%;transform:translateX(-50%);}
+.pm-label.left{left:4%;top:50%;transform:translateY(-50%) rotate(-90deg);}
+.pm-label.right{right:4%;top:50%;transform:translateY(-50%) rotate(90deg);}
+.pm-dot{
+  position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;cursor:default;
+  transition:transform .3s;
+}
+.pm-dot:hover{transform:scale(1.15);}
+.pm-dot-label{
+  position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);
+  white-space:nowrap;font-size:10px;font-weight:600;color:var(--text);
+}
+
+/* Occasion heatmap */
+.heatmap-table{width:100%;border-collapse:separate;border-spacing:3px;margin-top:16px;}
+.heatmap-table th{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;padding:8px 6px;text-align:center;}
+.heatmap-table th:first-child{text-align:left;}
+.heatmap-table td{text-align:center;padding:10px 6px;border-radius:8px;font-size:12px;font-weight:600;color:#fff;min-width:60px;}
+.heatmap-table td:first-child{text-align:left;color:var(--text);font-weight:500;background:transparent!important;font-size:13px;}
+
+/* Bar list */
+.bar-list{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+.bar-item{display:flex;align-items:center;gap:12px;}
+.bar-item .bar-label{font-size:13px;font-weight:500;width:140px;flex-shrink:0;text-align:right;}
+.bar-track{flex:1;height:24px;background:var(--surface);border-radius:6px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;transition:width 1s ease;}
+
+/* Segment tags */
+.seg-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.seg-tag{font-size:11px;font-weight:600;padding:5px 14px;border-radius:100px;background:rgba(10,186,181,0.08);color:var(--teal);border:1px solid rgba(10,186,181,0.15);}
+
+/* ═══ ADVANTAGE ═══ */
+.adv-section{background:var(--deep);color:#fff;position:relative;overflow:hidden;}
+.adv-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 80% 50%, rgba(10,186,181,0.06) 0%, transparent 70%);}
+.adv-section .s-title{color:#fff;}
+.adv-section .s-desc{color:rgba(255,255,255,0.55);}
+.adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;position:relative;}
+.adv-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:28px 24px;backdrop-filter:blur(8px);transition:background .3s,border-color .3s;}
+.adv-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(10,186,181,0.25);}
+.adv-card .adv-n{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--teal);margin-bottom:10px;}
+.adv-card h4{font-size:15px;font-weight:600;margin-bottom:6px;}
+.adv-card p{font-size:13px;line-height:1.6;color:rgba(255,255,255,0.5);}
+
+/* ═══ CTA ═══ */
+.cta{text-align:center;padding:88px 48px;background:var(--surface);}
+.cta .s-title{max-width:550px;margin:0 auto 12px;}
+.cta .s-desc{max-width:440px;margin:0 auto 36px;}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--mars-blue),var(--teal));
+  color:#fff;font-size:15px;font-weight:600;padding:14px 32px;
+  border-radius:100px;text-decoration:none;border:none;cursor:pointer;
+  font-family:inherit;transition:transform .3s,box-shadow .3s;
+}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,61,165,0.25);}
+.cta-btn svg{width:16px;height:16px;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  section{padding:64px 20px;}
+  .hero-inner{padding:100px 20px 60px;}
+  .data-grid.g2,.data-grid.g3,.data-grid.g4{grid-template-columns:1fr;}
+  .kpi-row{grid-template-columns:1fr 1fr;}
+  .verbatim-grid{grid-template-columns:1fr;}
+  .adv-grid{grid-template-columns:1fr;}
+  .hero-stats{flex-wrap:wrap;gap:28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span> Procurify Marketing Team · Research Preview</div>
+    <h1>What <em>real buyer insights</em> look like from Gather</h1>
+    <p class="hero-sub">These are synthetic results generated to preview the kind of insight, depth, and deliverables Gather produces for B2B spend management platforms — all within 7 days of project kick-off. Built for the questions Procurify's content and product teams are asking right now.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">5 studies</div><div class="lbl">Scoped for Procurify</div></div>
+      <div class="hero-stat"><div class="num">n=300–500</div><div class="lbl">Per study</div></div>
+      <div class="hero-stat"><div class="num">7 days</div><div class="lbl">Kick-off to delivery</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     STUDY 1: CONCEPT TESTING — MESSAGING & POSITIONING
+     ═══════════════════════════════════════════════════ -->
+<section class="study-section" style="background:var(--surface);">
+  <div class="container">
+    <div class="study-header">
+      <div class="study-icon" style="background:rgba(0,61,165,0.08);">🧪</div>
+      <div>
+        <h2>Messaging & Positioning Concept Test</h2>
+        <div class="study-tag">Value Proposition Validation · n=347 · 4 Messaging Concepts Tested</div>
+      </div>
+    </div>
+    <p class="study-intro">Four positioning concepts for Procurify's spend management platform were tested against finance leaders and procurement managers at mid-market companies (100–3,000 employees). Respondents engaged in adaptive dialogue exploring initial reactions, credibility, competitive differentiation from Coupa, SAP Concur, and Airbase, and willingness to request a demo.</p>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi"><div class="val" style="color:var(--mars-blue);">74%</div><div class="lbl">Top Concept Appeal</div></div>
+      <div class="kpi"><div class="val" style="color:var(--teal);">4.1/5</div><div class="lbl">Avg. Demo Intent</div></div>
+      <div class="kpi"><div class="val" style="color:var(--gold);">58%</div><div class="lbl">Would Replace Current Tool</div></div>
+      <div class="kpi"><div class="val" style="color:var(--coral);">3,124</div><div class="lbl">Verbatim Responses</div></div>
+    </div>
+
+    <div class="data-grid g2">
+      <div class="card">
+        <div class="card-label">Concept Scorecard</div>
+        <div class="chart-wrap"><canvas id="c1_concept"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Demo Intent Distribution</div>
+        <div class="chart-wrap"><canvas id="c1_intent"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Barrier Analysis -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-label">Top Adoption Barriers (% of Respondents Citing)</div>
+      <div class="bar-list">
+        <div class="bar-item"><span class="bar-label">Switching costs</span><div class="bar-track"><div class="bar-fill" style="width:51%;background:var(--mars-red);">51%</div></div></div>
+        <div class="bar-item"><span class="bar-label">ERP integration fears</span><div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--coral);">43%</div></div></div>
+        <div class="bar-item"><span class="bar-label">Unclear ROI timeline</span><div class="bar-track"><div class="bar-fill" style="width:37%;background:var(--gold);">37%</div></div></div>
+        <div class="bar-item"><span class="bar-label">Team change fatigue</span><div class="bar-track"><div class="bar-fill" style="width:29%;background:var(--teal);">29%</div></div></div>
+        <div class="bar-item"><span class="bar-label">Perceived as "too small"</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--violet);">18%</div></div></div>
+      </div>
+    </div>
+
+    <div class="verbatim-grid">
+      <div class="verbatim">"'Real-time spend visibility' is the phrase that hooked me. Our CFO literally asks me every Monday where we are against budget, and I have to pull four spreadsheets."<div class="v-meta">— VP Finance, 240-person SaaS company, Concept A</div></div>
+      <div class="verbatim">"I love the idea but 'procurement software' triggers PTSD from our Coupa implementation. If you say 'spend management' and keep it simple, I'm in."<div class="v-meta">— Controller, 800-person healthcare org, Concept B</div></div>
+      <div class="verbatim">"The 'built for teams without a procurement department' angle is perfect. That's literally us. We have 400 people and zero procurement staff."<div class="v-meta">— Director of Operations, 410-person nonprofit, Concept C</div></div>
+      <div class="verbatim">"I need to see that this talks to NetSuite on day one. If you can promise that and not charge me $200K to set up, you already beat SAP Concur."<div class="v-meta">— CFO, 150-person manufacturing firm, Concept A</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     STUDY 2: BRAND SENTIMENT & COMPETITIVE TRACKING
+     ═══════════════════════════════════════════════════ -->
+<section class="study-section">
+  <div class="container">
+    <div class="study-header">
+      <div class="study-icon" style="background:rgba(200,16,46,0.08);">💬</div>
+      <div>
+        <h2>Brand Sentiment & Competitive Landscape</h2>
+        <div class="study-tag">Perception & Equity Mapping · n=489 · 8 Platforms Tracked</div>
+      </div>
+    </div>
+    <p class="study-intro">Finance and procurement decision-makers described their perceptions of spend management platforms through projective exercises, spontaneous word association, and competitive trade-off scenarios. Brands tracked include Procurify, Coupa, SAP Concur, Airbase, Brex, Ramp, BILL (Divvy), and Navan.</p>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="val" style="color:var(--teal);">+31</div><div class="lbl">Procurify Net Sentiment</div></div>
+      <div class="kpi"><div class="val" style="color:var(--mars-blue);">+18</div><div class="lbl">Coupa Net Sentiment</div></div>
+      <div class="kpi"><div class="val" style="color:var(--gold);">+44</div><div class="lbl">Ramp Net Sentiment</div></div>
+      <div class="kpi"><div class="val" style="color:var(--coral);">3.4×</div><div class="lbl">Richer vs. Survey Data</div></div>
+    </div>
+
+    <div class="data-grid g2">
+      <div class="card">
+        <div class="card-label">Perceptual Map — Spend Management Landscape</div>
+        <div class="perceptual-map" id="percMap">
+          <div class="pm-axis-x"></div>
+          <div class="pm-axis-y"></div>
+          <div class="pm-label top">Enterprise-Grade</div>
+          <div class="pm-label bottom">SMB-Friendly</div>
+          <div class="pm-label left">Complex / Feature-Heavy</div>
+          <div class="pm-label right">Simple / Intuitive</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Emotional Territory Ownership</div>
+        <div class="chart-wrap"><canvas id="c2_radar"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-label">Sentiment Trend — Quarterly Narrative Shift (Indexed)</div>
+      <div class="chart-wrap"><canvas id="c2_trend"></canvas></div>
+    </div>
+
+    <div class="verbatim-grid">
+      <div class="verbatim">"Procurify feels like it was built by someone who's actually had to chase down purchase approvals. It doesn't feel like enterprise software pretending to be user-friendly."<div class="v-meta">— Procurement Lead, 600-person logistics company, Brand Personification</div></div>
+      <div class="verbatim">"Coupa is the Salesforce of procurement — powerful, expensive, and you'll need a consultant for three months. We're a 300-person company. That's overkill."<div class="v-meta">— VP Finance, mid-market tech firm, Competitive Trade-off</div></div>
+      <div class="verbatim">"Ramp is winning the vibe war. Their content is everywhere, their card is easy. But when I actually need approval workflows and PO management, they fall apart."<div class="v-meta">— Controller, 500-person e-commerce company, Spontaneous Association</div></div>
+      <div class="verbatim">"SAP Concur makes me feel like I'm filing taxes every time I submit a report. There's zero joy. Procurify at least tries to make the experience painless."<div class="v-meta">— Operations Manager, 280-person nonprofit, Projective Exercise</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     STUDY 3: USAGE & WORKFLOW OCCASION MAPPING
+     ═══════════════════════════════════════════════════ -->
+<section class="study-section" style="background:var(--surface);">
+  <div class="container">
+    <div class="study-header">
+      <div class="study-icon" style="background:rgba(245,166,35,0.08);">🗺️</div>
+      <div>
+        <h2>Procurement Workflow & Occasion Mapping</h2>
+        <div class="study-tag">Demand Space Discovery · n=418 · 1,387 Workflow Moments Captured</div>
+      </div>
+    </div>
+    <p class="study-intro">Respondents walked through real recent purchasing and approval moments in dialogue form. Our AI moderator probed on context, urgency, stakeholders involved, tools used, and friction points — surfacing 12 distinct workflow occasions, including 3 emergent use cases not addressed by existing Procurify or competitor workflows.</p>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="val" style="color:var(--gold);">12</div><div class="lbl">Workflow Occasions Found</div></div>
+      <div class="kpi"><div class="val" style="color:var(--teal);">3 new</div><div class="lbl">Emergent Use Cases</div></div>
+      <div class="kpi"><div class="val" style="color:var(--mars-blue);">63%</div><div class="lbl">Use Workarounds</div></div>
+      <div class="kpi"><div class="val" style="color:var(--coral);">1,387</div><div class="lbl">Moments Captured</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Procurement Activity Heatmap — Frequency × Time of Month</div>
+      <table class="heatmap-table" id="heatmap"></table>
+    </div>
+
+    <div class="data-grid g2" style="margin-top:24px;">
+      <div class="card">
+        <div class="card-label">Top Workflow Occasions by Frequency</div>
+        <div class="chart-wrap"><canvas id="c3_demand"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Whitespace Opportunities</div>
+        <div style="margin-top:8px;">
+          <div style="background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:16px 18px;margin-bottom:12px;">
+            <h4 style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:4px;">🔥 "Emergency PO After Hours"</h4>
+            <p style="font-size:13px;line-height:1.55;color:var(--text2);">Urgent purchases at 6–10pm when approvers are unavailable. Teams use personal cards or email chains as workarounds. A mobile-first emergency approval flow with pre-set spending limits could capture this need. <strong>Major retention lever for mid-market.</strong></p>
+          </div>
+          <div style="background:rgba(10,186,181,0.06);border:1px solid rgba(10,186,181,0.15);border-radius:12px;padding:16px 18px;margin-bottom:12px;">
+            <h4 style="font-size:14px;font-weight:700;color:var(--teal);margin-bottom:4px;">⚡ "New Hire Tech Stack Setup"</h4>
+            <p style="font-size:13px;line-height:1.55;color:var(--text2);">Onboarding triggers 8–12 software license purchases per hire. Currently handled via ad-hoc Slack messages to IT and finance. Templated procurement bundles with auto-approval would save 2.4 hours per hire. <strong>Differentiator vs. Airbase and Ramp.</strong></p>
+          </div>
+          <div style="background:rgba(124,92,252,0.06);border:1px solid rgba(124,92,252,0.15);border-radius:12px;padding:16px 18px;">
+            <h4 style="font-size:14px;font-weight:700;color:var(--violet);margin-bottom:4px;">📊 "Quarter-End Budget Scramble"</h4>
+            <p style="font-size:13px;line-height:1.55;color:var(--text2);">Last 5 days of quarter see 3.2× spike in purchase requests as teams rush to use remaining budget. Finance teams need a dashboard view of remaining budget by department with projected spend-down. <strong>Feature gap across all competitors.</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="verbatim-grid">
+      <div class="verbatim">"It's 8pm on a Friday and our warehouse needs replacement parts by Monday. My boss's boss has to approve anything over $500. So I just put it on my personal Amex and expense it later. That can't be the answer."<div class="v-meta">— Operations Manager, 350-person manufacturing, Emergency Occasion</div></div>
+      <div class="verbatim">"Every time we hire a new engineer, I get six Slack messages asking to buy different SaaS tools. I just want a button that says 'standard engineer kit' and auto-routes to finance."<div class="v-meta">— IT Director, 200-person SaaS company, Onboarding Occasion</div></div>
+      <div class="verbatim">"Last three days of the quarter, my team goes into panic mode trying to figure out if we still have budget. We're pulling numbers from three different places and none of them agree."<div class="v-meta">— Finance Manager, 450-person nonprofit, Quarter-End Occasion</div></div>
+      <div class="verbatim">"The approval chain for a $50 subscription is the same as a $50,000 vendor contract. That's broken. We need tiered approvals that match the actual risk level."<div class="v-meta">— Controller, 300-person tech startup, Routine Purchase Occasion</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     STUDY 4: MILLENNIAL FINANCE LEADERS
+     ═══════════════════════════════════════════════════ -->
+<section class="study-section">
+  <div class="container">
+    <div class="study-header">
+      <div class="study-icon" style="background:rgba(10,186,181,0.08);">⚡</div>
+      <div>
+        <h2>Millennial Finance Leaders & Next-Gen Buyers</h2>
+        <div class="study-tag">Next-Gen Decision-Maker Architecture · n=336 · Ages 28–42</div>
+      </div>
+    </div>
+    <p class="study-intro">Mobile-first conversational interviews with millennial-generation CFOs, VPs of Finance, and Controllers who are now the primary decision-makers for procurement tools at mid-market companies. This cohort grew up with consumer-grade software and holds fundamentally different expectations for B2B tools than their predecessors. 3× higher completion rate than traditional B2B surveys.</p>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="val" style="color:var(--teal);">91%</div><div class="lbl">Completion Rate</div></div>
+      <div class="kpi"><div class="val" style="color:var(--violet);">17.8 min</div><div class="lbl">Avg. Engagement</div></div>
+      <div class="kpi"><div class="val" style="color:var(--gold);">73%</div><div class="lbl">Self-Serve Research First</div></div>
+      <div class="kpi"><div class="val" style="color:var(--mars-red);">62%</div><div class="lbl">Expect Consumer-Grade UX</div></div>
+    </div>
+
+    <div class="data-grid g2">
+      <div class="card">
+        <div class="card-label">Vendor Discovery Channels — Millennial Finance Leaders</div>
+        <div class="chart-wrap"><canvas id="c4_discovery"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Purchase Decision Drivers — Resonance vs. Procurify Fit</div>
+        <div class="chart-wrap"><canvas id="c4_culture"></canvas></div>
+      </div>
+    </div>
+
+    <div class="data-grid g2" style="margin-top:24px;">
+      <div class="card">
+        <div class="card-label">Millennial Buyer Affinity Index (Spend Management Platforms)</div>
+        <div class="bar-list" style="margin-top:0;">
+          <div class="bar-item"><span class="bar-label">Ramp</span><div class="bar-track"><div class="bar-fill" style="width:79%;background:var(--teal);">79</div></div></div>
+          <div class="bar-item"><span class="bar-label">Procurify</span><div class="bar-track"><div class="bar-fill" style="width:74%;background:var(--teal);">74</div></div></div>
+          <div class="bar-item"><span class="bar-label">Airbase</span><div class="bar-track"><div class="bar-fill" style="width:68%;background:var(--mars-blue);">68</div></div></div>
+          <div class="bar-item"><span class="bar-label">Brex</span><div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--mars-blue);">64</div></div></div>
+          <div class="bar-item"><span class="bar-label">BILL (Divvy)</span><div class="bar-track"><div class="bar-fill" style="width:52%;background:var(--text2);">52</div></div></div>
+          <div class="bar-item"><span class="bar-label">SAP Concur</span><div class="bar-track"><div class="bar-fill" style="width:31%;background:var(--text2);">31</div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">What Millennial Finance Leaders Say About Procurify</div>
+        <div class="seg-row" style="margin-top:0;margin-bottom:16px;">
+          <span class="seg-tag">Clean UX</span>
+          <span class="seg-tag">Right-Sized</span>
+          <span class="seg-tag">Trustworthy</span>
+          <span class="seg-tag">Fast Onboarding</span>
+          <span class="seg-tag" style="background:rgba(200,16,46,0.08);color:var(--mars-red);border-color:rgba(200,16,46,0.15);">Low Brand Awareness</span>
+          <span class="seg-tag" style="background:rgba(200,16,46,0.08);color:var(--mars-red);border-color:rgba(200,16,46,0.15);">Not "Sexy" Enough</span>
+        </div>
+        <div class="verbatim" style="margin-bottom:10px;">"Procurify is the tool I want but Ramp is the tool my CEO already heard about on a podcast. Awareness is Procurify's biggest problem, not the product."<div class="v-meta">— VP Finance, 320-person SaaS, Age 36</div></div>
+        <div class="verbatim">"I evaluate software the way I shop on Amazon. If I can't understand what you do in 30 seconds on your homepage, you're out. Procurify's site is good. Coupa's is a maze."<div class="v-meta">— Controller, 180-person e-commerce, Age 33</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     STUDY 5: PROCUREMENT MATURITY & ADOPTION PSYCHOLOGY
+     ═══════════════════════════════════════════════════ -->
+<section class="study-section" style="background:var(--surface);">
+  <div class="container">
+    <div class="study-header">
+      <div class="study-icon" style="background:rgba(124,92,252,0.08);">🏗️</div>
+      <div>
+        <h2>Procurement Maturity & Buying Psychology</h2>
+        <div class="study-tag">Buyer Psychographics & Readiness Segments · n=452 · 4 Archetypes Identified</div>
+      </div>
+    </div>
+    <p class="study-intro">Decision-makers engaged in 20+ minute conversations about their company's procurement evolution, pain thresholds that trigger tool adoption, internal politics of spend management, and the emotional journey of buying B2B software. Response lengths were 2.3× longer than B2B benchmarks — finance leaders have strong opinions about spend chaos. Four distinct buyer archetypes emerged.</p>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="val" style="color:var(--violet);">4</div><div class="lbl">Buyer Archetypes</div></div>
+      <div class="kpi"><div class="val" style="color:var(--teal);">21 min</div><div class="lbl">Avg. Conversation</div></div>
+      <div class="kpi"><div class="val" style="color:var(--gold);">68%</div><div class="lbl">Spreadsheet-First Today</div></div>
+      <div class="kpi"><div class="val" style="color:var(--mars-red);">$47K</div><div class="lbl">Avg. Pain Threshold</div></div>
+    </div>
+
+    <div class="data-grid g2">
+      <div class="card">
+        <div class="card-label">Feature Importance Hierarchy — What Closes Deals</div>
+        <div class="chart-wrap"><canvas id="c5_trust"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Buyer Archetypes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:rgba(124,92,252,0.06);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:13px;font-weight:700;color:var(--violet);margin-bottom:4px;">📐 Process Architects (26%)</div>
+            <p style="font-size:12px;line-height:1.5;color:var(--text2);">Want configurable approval workflows, audit trails, and compliance controls. Will run a 90-day eval. Over-index on Coupa but get burned by complexity. Procurify's sweet spot if positioned right.</p>
+          </div>
+          <div style="background:rgba(10,186,181,0.06);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:13px;font-weight:700;color:var(--teal);margin-bottom:4px;">🔥 Chaos Escapees (31%)</div>
+            <p style="font-size:12px;line-height:1.5;color:var(--text2);">Hit a breaking point — audit finding, embarrassing budget overrun, or CEO mandate. Need a solution deployed in weeks, not months. Fastest path-to-close. Value speed and simplicity over feature depth.</p>
+          </div>
+          <div style="background:rgba(245,166,35,0.06);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px;">📊 Data-Hungry CFOs (24%)</div>
+            <p style="font-size:12px;line-height:1.5;color:var(--text2);">Primary need is spend visibility and real-time reporting. Less interested in PO workflows, more interested in dashboards. Currently cobbling together data from QuickBooks + spreadsheets. Want a "single pane of glass."</p>
+          </div>
+          <div style="background:rgba(200,16,46,0.06);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:13px;font-weight:700;color:var(--mars-red);margin-bottom:4px;">🛡️ Risk Minimizers (19%)</div>
+            <p style="font-size:12px;line-height:1.5;color:var(--text2);">Triggered by compliance pressure — SOX prep, board requirements, or investor due diligence. Will pay premium for audit-ready controls. Most receptive to case studies and peer validation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-label">Need-State Gap Analysis — Importance vs. Current Satisfaction</div>
+      <div class="chart-wrap"><canvas id="c5_needs"></canvas></div>
+    </div>
+
+    <div class="verbatim-grid">
+      <div class="verbatim">"We hit $15M in revenue and suddenly couldn't tell you where $2M of our spend was going. That's the moment I knew we needed Procurify or something like it. Spreadsheets don't scale past 200 employees."<div class="v-meta">— CFO, 220-person SaaS company, Chaos Escapee</div></div>
+      <div class="verbatim">"I spent two weeks building a spend report for our board. Two weeks. If I had real-time dashboards, that's time I could spend on strategic planning. That's what I'm really buying."<div class="v-meta">— VP Finance, 380-person logistics firm, Data-Hungry CFO</div></div>
+      <div class="verbatim">"Our auditor flagged seventeen instances of unauthorized purchases last quarter. Seventeen. My CEO looked at me like it was my fault. I need approval workflows that are actually enforced, not optional."<div class="v-meta">— Controller, 500-person healthcare org, Risk Minimizer</div></div>
+      <div class="verbatim">"I evaluated Airbase, Ramp, and Procurify. Ramp's card is great but their PO system is an afterthought. Airbase is powerful but priced for companies 2× our size. Procurify was the Goldilocks option."<div class="v-meta">— Director of Finance, 270-person tech company, Process Architect</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ADVANTAGE ═══ -->
+<section class="adv-section">
+  <div class="container">
+    <div class="s-label" style="color:var(--teal);">The Gather Advantage</div>
+    <div class="s-title">Why this is different</div>
+    <p class="s-desc">Traditional research forces a trade-off: qualitative depth or quantitative scale. Gather eliminates that trade-off.</p>
+    <div class="adv-grid">
+      <div class="adv-card"><div class="adv-n">7 days</div><h4>Speed to Insight</h4><p>From kick-off to production-ready report. No 6-week timelines.</p></div>
+      <div class="adv-card"><div class="adv-n">10×</div><h4>Signal Density</h4><p>15–20 min adaptive dialogue per respondent. Qual depth at quant scale.</p></div>
+      <div class="adv-card"><div class="adv-n">n=300+</div><h4>Stat Confidence</h4><p>Segment-level findings with quantified theme frequencies.</p></div>
+      <div class="adv-card"><div class="adv-n">AI</div><h4>Adaptive Moderation</h4><p>Every follow-up is tailored. No two conversations are the same.</p></div>
+      <div class="adv-card"><div class="adv-n">📱</div><h4>Mobile-Native</h4><p>2–3× completion rates. Respondents engage on their own time.</p></div>
+      <div class="adv-card"><div class="adv-n">📊</div><h4>Ready to Present</h4><p>Interactive dashboards. No reformatting. Walk straight into the boardroom.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta">
+  <div class="container">
+    <div class="s-label">Next Steps</div>
+    <div class="s-title">Let's scope a pilot study for Procurify</div>
+    <p class="s-desc">We recommend starting with a messaging concept test or buyer archetype study — then expanding into competitive tracking across the spend management category.</p>
+    <a href="mailto:jay@gatherhq.com" class="cta-btn">Let's Talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </div>
+</section>
+
+<script>
+// ═══ CHART.JS DEFAULTS ═══
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#556377';
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
+Chart.defaults.plugins.legend.labels.padding = 16;
+Chart.defaults.elements.bar.borderRadius = 4;
+
+const COLORS = {
+  blue:'#003DA5', red:'#C8102E', teal:'#0ABAB5', gold:'#F5A623',
+  coral:'#FF6B6B', violet:'#7C5CFC', deep:'#0A1E33', text2:'#556377'
+};
+
+// ═══ STUDY 1: CONCEPT TESTING ═══
+new Chart(document.getElementById('c1_concept'), {
+  type: 'bar',
+  data: {
+    labels: ['Concept A\n"Real-Time Visibility"', 'Concept B\n"Effortless Procurement"', 'Concept C\n"Built for the\nMid-Market"', 'Concept D\n"Spend Control\nWithout Complexity"'],
+    datasets: [
+      {label:'Appeal', data:[74,59,68,71], backgroundColor:COLORS.blue},
+      {label:'Credibility', data:[69,53,72,64], backgroundColor:COLORS.teal},
+      {label:'Differentiation', data:[63,47,66,58], backgroundColor:COLORS.gold},
+      {label:'Demo Intent', data:[71,48,62,67], backgroundColor:COLORS.coral},
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}},x:{ticks:{font:{size:11}}}},
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+
+new Chart(document.getElementById('c1_intent'), {
+  type: 'bar',
+  data: {
+    labels: ['Definitely request demo','Probably request demo','Might consider','Probably not','Definitely not'],
+    datasets: [
+      {label:'Concept A', data:[26,41,21,9,3], backgroundColor:COLORS.blue},
+      {label:'Concept C', data:[19,39,24,13,5], backgroundColor:COLORS.teal},
+      {label:'Concept D', data:[22,38,23,12,5], backgroundColor:COLORS.gold},
+    ]
+  },
+  options: {
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    scales:{x:{stacked:false,ticks:{callback:v=>v+'%'}},y:{}},
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+
+// ═══ STUDY 2: BRAND SENTIMENT ═══
+// Perceptual Map dots
+const brands = [
+  {name:"Procurify", x:62, y:42, size:40, color:COLORS.blue},
+  {name:"Coupa", x:28, y:18, size:42, color:COLORS.text2},
+  {name:"SAP Concur", x:22, y:25, size:44, color:COLORS.text2},
+  {name:"Airbase", x:58, y:32, size:34, color:COLORS.gold},
+  {name:"Ramp", x:72, y:58, size:38, color:COLORS.coral},
+  {name:"Brex", x:68, y:62, size:32, color:COLORS.violet},
+  {name:"BILL (Divvy)", x:55, y:65, size:30, color:COLORS.teal},
+  {name:"Navan", x:48, y:55, size:28, color:'#8B9DAF'},
+];
+const map = document.getElementById('percMap');
+brands.forEach(b => {
+  const dot = document.createElement('div');
+  dot.className = 'pm-dot';
+  dot.style.cssText = `width:${b.size}px;height:${b.size}px;background:${b.color};left:calc(${b.x}% - ${b.size/2}px);top:calc(${b.y}% - ${b.size/2}px);`;
+  dot.innerHTML = `<span class="pm-dot-label">${b.name}</span>`;
+  map.appendChild(dot);
+});
+
+new Chart(document.getElementById('c2_radar'), {
+  type: 'radar',
+  data: {
+    labels: ['Trust', 'Ease of Use', 'Value for Money', 'Innovation', 'Support Quality', 'Scalability'],
+    datasets: [
+      {label:"Procurify", data:[76,82,78,61,74,68], borderColor:COLORS.blue, backgroundColor:'rgba(0,61,165,0.08)', pointBackgroundColor:COLORS.blue},
+      {label:"Coupa", data:[72,38,34,68,52,88], borderColor:COLORS.text2, backgroundColor:'rgba(85,99,119,0.06)', pointBackgroundColor:COLORS.text2},
+      {label:"Ramp", data:[68,86,82,84,62,48], borderColor:COLORS.coral, backgroundColor:'rgba(255,107,107,0.08)', pointBackgroundColor:COLORS.coral},
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales:{r:{beginAtZero:true,max:100,ticks:{display:false},grid:{color:'rgba(0,0,0,0.05)'},pointLabels:{font:{size:11,weight:'600'}}}},
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+
+new Chart(document.getElementById('c2_trend'), {
+  type: 'line',
+  data: {
+    labels: ['Q1 2025','Q2 2025','Q3 2025','Q4 2025','Q1 2026'],
+    datasets: [
+      {label:"Procurify", data:[100,103,106,109,113], borderColor:COLORS.blue, backgroundColor:COLORS.blue, tension:0.3, pointRadius:4},
+      {label:"Ramp", data:[100,108,114,119,124], borderColor:COLORS.coral, backgroundColor:COLORS.coral, tension:0.3, pointRadius:4},
+      {label:"Coupa", data:[100,98,96,93,91], borderColor:COLORS.text2, backgroundColor:COLORS.text2, tension:0.3, pointRadius:4},
+      {label:"Airbase", data:[100,102,105,103,106], borderColor:COLORS.gold, backgroundColor:COLORS.gold, tension:0.3, pointRadius:4},
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales:{y:{min:85,max:130,ticks:{callback:v=>v}},x:{}},
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+
+// ═══ STUDY 3: OCCASION HEATMAP ═══
+const heatData = {
+  rows: ['PO creation & approval','Expense reconciliation','Budget check-ins','Vendor onboarding','Emergency purchases','Software renewals','Month-end close tasks','Audit preparation'],
+  cols: ['Wk 1','Wk 2','Wk 3','Wk 4','Month-End','QTR-End'],
+  vals: [
+    [68,72,65,58,44,38],
+    [32,35,38,42,82,78],
+    [55,48,44,52,74,88],
+    [42,38,45,36,28,24],
+    [22,28,25,32,48,55],
+    [18,22,24,35,62,72],
+    [15,18,22,38,88,92],
+    [12,14,16,22,45,82],
+  ]
+};
+const ht = document.getElementById('heatmap');
+let thead = '<tr><th></th>';
+heatData.cols.forEach(c => thead += `<th>${c}</th>`);
+thead += '</tr>';
+let tbody = '';
+heatData.rows.forEach((r,i) => {
+  tbody += `<tr><td>${r}</td>`;
+  heatData.vals[i].forEach(v => {
+    const alpha = Math.max(0.15, v/100);
+    const bg = v > 65 ? `rgba(200,16,46,${alpha})` : v > 40 ? `rgba(245,166,35,${alpha})` : `rgba(10,186,181,${alpha})`;
+    tbody += `<td style="background:${bg};">${v}</td>`;
+  });
+  tbody += '</tr>';
+});
+ht.innerHTML = thead + tbody;
+
+new Chart(document.getElementById('c3_demand'), {
+  type: 'bar',
+  data: {
+    labels: ['Month-End\nReconciliation','PO Creation\n& Approval','Budget\nCheck-in','Quarter-End\nScramble','Software\nRenewals','Emergency\nPurchases','Vendor\nOnboarding','Audit\nPrep'],
+    datasets: [{
+      data: [88,72,68,62,55,48,42,38],
+      backgroundColor: [COLORS.blue, COLORS.red, COLORS.teal, COLORS.violet, COLORS.gold, COLORS.coral, '#8B9DAF', '#8B9DAF'],
+    }]
+  },
+  options: {
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'%'}},y:{ticks:{font:{size:11}}}},
+    plugins:{legend:{display:false}}
+  }
+});
+
+// ═══ STUDY 4: MILLENNIAL FINANCE LEADERS ═══
+new Chart(document.getElementById('c4_discovery'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Peer Recommendation','Google Search','LinkedIn Content','G2/Capterra Reviews','Podcast/Newsletter','Vendor Outreach','Other'],
+    datasets: [{
+      data: [29,22,18,14,9,5,3],
+      backgroundColor: [COLORS.deep, COLORS.teal, COLORS.coral, COLORS.gold, COLORS.violet, COLORS.blue, '#ccc'],
+      borderWidth: 2, borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    cutout:'55%',
+    plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}
+  }
+});
+
+new Chart(document.getElementById('c4_culture'), {
+  type: 'bar',
+  data: {
+    labels: ['Ease of Use','Fast Implementation','Transparent Pricing','Modern UI/UX','Self-Serve Trial','Strong Integrations','Brand Trust'],
+    datasets: [
+      {label:'Importance Score', data:[89,83,78,74,71,68,62], backgroundColor:COLORS.teal},
+      {label:'Procurify Delivery', data:[82,76,71,78,42,64,58], backgroundColor:COLORS.blue},
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    scales:{y:{beginAtZero:true,max:100},x:{ticks:{font:{size:10}}}},
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+
+// ═══ STUDY 5: PROCUREMENT MATURITY ═══
+new Chart(document.getElementById('c5_trust'), {
+  type: 'bar',
+  data: {
+    labels: ["Approval workflows","Spend visibility dashboard","ERP/accounting integration","PO management","Budget tracking","Vendor management","Mobile approvals","AI-powered insights"],
+    datasets: [{
+      label:'Importance Index',
+      data: [91,88,84,79,76,68,63,57],
+      backgroundColor: [COLORS.blue, COLORS.blue, COLORS.teal, COLORS.teal, COLORS.gold, COLORS.text2, COLORS.text2, COLORS.text2],
+    }]
+  },
+  options: {
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    scales:{x:{beginAtZero:true,max:100},y:{ticks:{font:{size:11}}}},
+    plugins:{legend:{display:false}}
+  }
